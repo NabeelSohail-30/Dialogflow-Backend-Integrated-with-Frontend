@@ -39,7 +39,12 @@ const handleUserMessage = () => {
 //Bot Message Function
 const handleBotMessage = async (message) => {
     //send message to server
-    axios.get('/webhook', { message: message })
+    axios.post('/webhook', {
+        queryResult: {
+            queryText: message,
+            parameters: {}
+        }
+    })
         .then((res) => {
             console.log(res.data);
             let botChat = `
@@ -103,9 +108,12 @@ const displayBotMessage = () => {
 //function to get message time
 const msgTime = () => {
     let today = new Date();
+
     let hours = (today.getHours() % 12) || 12;
     hours = String(hours).padStart(2, '0')
+
     let minutes = String(today.getMinutes()).padStart(2, '0')
+
     let time = hours + ":" + minutes;
     time = time + (today.getHours() >= 12 ? ' PM' : ' AM');
     return time
